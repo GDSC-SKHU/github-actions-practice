@@ -1,0 +1,27 @@
+name: test # workflow 이름
+
+# workflow의 이벤트를 명시
+on:
+  push:
+    branches:
+      - main
+      # main이라는 브랜치가 push가 됐을 때 on!
+  pull_request:
+    branches:
+      - main
+      - feat/** # feat: ~~~ 할 때도!
+      # main이라는 브랜치가 pull_request가 됐을 때 on!
+
+jobs:
+  test: # 이름 저의
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: install node
+        uses: actions/setup-node@v3
+      - run: npm install -g bats
+      - run: bats -v # 배치의 버전을 출력하는 코드
+      - run: echo "힘내!"
+      - run: echo "나는 ${{github.actor}}야" # 깃헙 닉네임이 들어간다
+      - run: echo "${{github.event_name}} event에 의해서 자동으로 샐행됐다"
